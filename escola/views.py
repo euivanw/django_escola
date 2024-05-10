@@ -1,7 +1,8 @@
 from rest_framework import viewsets, generics
 
 from escola.models import Aluno, Curso, Matricula
-from escola.serializer import AlunoSerializer, CursoSerializer, MatriculaSerializer, ListaMatriculasAlunoSerializer
+from escola.serializer import AlunoSerializer, CursoSerializer, MatriculaSerializer, ListaMatriculasAlunoSerializer, \
+    ListaAlunosMatriculadosSerializer
 
 
 class AlunosViewSet(viewsets.ModelViewSet):
@@ -28,4 +29,13 @@ class ListaMatriculasAlunoViewSet(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Matricula.objects.filter(aluno_id=self.kwargs['pk'])
+        return queryset
+
+
+class ListaAlunosMatriculadosViewSet(generics.ListAPIView):
+    """ Exibir todos os alunos matriculados em um curso """
+    serializer_class = ListaAlunosMatriculadosSerializer
+
+    def get_queryset(self):
+        queryset = Matricula.objects.filter(curso_id=self.kwargs['pk'])
         return queryset
